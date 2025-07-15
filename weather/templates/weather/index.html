@@ -1,0 +1,53 @@
+{% extends 'weather/base.html' %}
+
+{% block title %}Weather{% endblock %}
+
+{% block content %}
+  <form method="GET" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="city" class="form-control" placeholder="Enter city name" required>
+      <button type="submit" class="btn btn-primary">Get Weather</button>
+    </div>
+  </form>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% else %}
+    {% if city %}
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body text-center">
+          <h2 class="card-title">Current Weather in {{ city }}{% if country %}, {{ country }}{% endif %}</h2>
+          <span class="weather-emoji my-3" style="font-size: 80px; display: block;">{{ icon }}</span> 
+          <h3 class="card-text">{{ temperature|floatformat:1 }} °C</h3>
+          <p class="card-text lead">{{ description }}</p>
+        </div>
+      </div>
+      {% if guest %}
+        <p class="text-muted">Login or register to see the 7-day forecast.</p>
+      {% endif %}
+
+      {% if weekly_forecast %}
+        <div class="card weather-card mb-4 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-3">8-Day Forecast</h4>
+                <div class="row row-cols-2 row-cols-md-4 g-3">
+                    {% for entry in weekly_forecast %}
+                        <div class="col">
+                            <div class="card text-center forecast-card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-subtitle mb-2 text-muted">{{ entry.date }}</h5>
+                                    <span class="daily-emoji mb-1" style="font-size: 40px; display: block;">{{ entry.icon }}</span>
+                                    <p class="card-text mb-0">Min: {{ entry.min_temp|floatformat:0 }} °C</p>
+                                    <p class="card-text mb-0">Max: {{ entry.max_temp|floatformat:0 }} °C</p>
+                                    <small class="text-muted">{{ entry.description }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endblock %}

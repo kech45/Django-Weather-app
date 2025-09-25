@@ -26,6 +26,7 @@ def getWeather(icon_name):
     }
     return emoji_map.get(icon_name, 'unknown weather')
 
+#This runs whenever a user accesses the index page
 def index(request):
     city = request.GET.get('city')
     geocoding_api = '68756eb49e4a686df0b5652c27e6f3e9' # from openweathermap, because pirate weather's api is not specialized in geocoding

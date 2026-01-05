@@ -1,7 +1,9 @@
 import requests
 from datetime import datetime, timezone
 import pytz
+import os
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -34,8 +36,8 @@ def getWeather(icon_name):
 def index(request):
     city = request.GET.get('city')
 
-    geocoding_api = '68756eb49e4a686df0b5652c27e6f3e9'
-    api_key = 'JAev9U7MjerdnQ1yyDRjTgbPodzYW8dY'
+    geocoding_api = settings.OPENWEATHER_API_KEY
+    api_key = settings.PIRATEWEATHER_API_KEY
 
     context = {}
 

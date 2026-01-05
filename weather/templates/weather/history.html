@@ -1,0 +1,60 @@
+{% extends 'weather/base.html' %}
+
+{% block title %}Search History{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Your Weather Search History</h2>
+
+  {% if searches %}
+    <a href="{% url 'clear_all_history' %}"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Are you sure you want to clear all history?');">
+      Clear All
+    </a>
+  {% endif %}
+</div>
+
+{% if searches %}
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for search in searches %}
+      <div class="col">
+        <div class="card shadow-sm h-100">
+          <div class="card-body text-center">
+
+            <h4 class="card-title">
+              <a href="{% url 'index' %}?city={{ search.city }}"
+                 class="text-decoration-none">
+                {{ search.city }}
+                {% if search.country %}, {{ search.country }}{% endif %}
+              </a>
+            </h4>
+
+            <span style="font-size: 55px; display: block;">
+              {{ search.icon }}
+            </span>
+
+            <h5 class="mt-2">{{ search.temperature|floatformat:1 }} °C</h5>
+            <p class="lead mb-2">{{ search.description }}</p>
+
+            <small class="text-muted d-block mb-3">
+              {{ search.searched_at|date:"M d, Y H:i" }}
+            </small>
+
+            <a href="{% url 'delete_history' search.id %}"
+               class="btn btn-outline-danger btn-sm"
+               onclick="return confirm('Delete this history entry?');">
+              Delete
+            </a>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-info text-center">
+    You have no search history yet.
+  </div>
+{% endif %}
+{% endblock %}
